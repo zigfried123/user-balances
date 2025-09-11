@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('operations', function (Blueprint $table) {
             $table->id();
             $table->enum('type',['credit','debit']);
+            $table->decimal('sum');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('balance_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
