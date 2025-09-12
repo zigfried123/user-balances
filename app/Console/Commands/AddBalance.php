@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Balance;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Validation\ValidationException;
 
 class AddBalance extends Command
 {
@@ -13,7 +14,7 @@ class AddBalance extends Command
      *
      * @var string
      */
-    protected $signature = 'app:add-balance {user_id} {balance}';
+    protected $signature = 'app:add-balance {user_id} {total} {currency}';
 
     /**
      * The console command description.
@@ -27,8 +28,14 @@ class AddBalance extends Command
      */
     public function handle()
     {
-        $user = User::find($this->argument('user_id'));
-        $balance = new Balance(['balance' => $this->argument('balance')]);
-        $user->balance()->save($balance);
+        $arguments = array_slice($this->arguments(), 1);
+
+        if(Balance::where(['user_id'=>$arguments['user_id'],'currency'=>$arguments['currency']])->first()){
+            throw ValidationException::withMessages(['user_id,email'=>'user_id and email not unique']);
+        };
+
+        $user = User::find($arguments['user_id']);
+        $balance = new Balance(['total' => $arguments['total'], 'currency' => $arguments['currency']]);
+        $user->balances()->save($balance);
     }
 }

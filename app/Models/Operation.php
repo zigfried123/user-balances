@@ -7,12 +7,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Operation extends Model
 {
+    const TYPE = [
+        'DEBIT' => 'debit',
+        'CREDIT' => 'credit',
+    ];
+
     protected $fillable = [
         'sum',
         'type',
         'balance_id',
         'user_id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime:Y-m-d h:i:s',
+        ];
+    }
 
     public function user(): BelongsTo
     {

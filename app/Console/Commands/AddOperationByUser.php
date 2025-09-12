@@ -17,7 +17,7 @@ class AddOperationByUser extends Command
      *
      * @var string
      */
-    protected $signature = 'app:add-operation-by-user {user_id} {type} {sum}';
+    protected $signature = 'app:add-operation-by-user {user_id} {currency} {type} {sum}';
 
     /**
      * The console command description.
@@ -32,21 +32,22 @@ class AddOperationByUser extends Command
     public function handle(Operation $operation)
     {
         $data = array_slice($this->arguments(), 1);
+
         try {
             DB::transaction(function () use ($data, $operation) {
-                $balance = Balance::where('user_id', $data['user_id'])->first();
+                $balance = Balance::where(['user_id' => $data['user_id'], 'currency' => $data['currency']])->first();
 
                 $data['balance_id'] = $balance->id;
 
-                $operation->create($data);
-
                 $this->changeBalanceByType($balance, $data);
+
+                $operation->create($data);
 
                 $balance->save();
 
             });
         } catch (\Throwable $e) {
-            var_dump($e);
+            var_dump($e->getMessage());
         }
     }
 }

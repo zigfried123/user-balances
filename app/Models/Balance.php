@@ -8,8 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Balance extends Model
 {
+    const CURRENCIES_LIST = [
+       'RUB' => 'RUB',
+       'USD' => 'USD'
+    ];
+
     protected $fillable = [
-        'balance',
+        'total',
+        'currency',
         'user_id',
     ];
 
