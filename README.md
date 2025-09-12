@@ -3,14 +3,13 @@
 composer i
 
 установить свои настройки в env.example и переименовать в env
-пример:
-DB_CONNECTION=pgsql
-DB_HOST=localhost
-DB_PORT=5432
-DB_DATABASE=user_balance
-DB_USERNAME=postgres
+пример:<br><br>
+DB_CONNECTION=pgsql<br>
+DB_HOST=localhost<br>
+DB_PORT=5432<br>
+DB_DATABASE=user_balance<br>
+DB_USERNAME=postgres<br>
 DB_PASSWORD=postgres
-
 
 php artisan migrate
 
@@ -19,6 +18,9 @@ composer run dev
 npm i
 
 npm run dev
+
+для запуска обработчиков очередей
+php artisan queue:work
 
 ## Добавление пользователя
 php artisan app:add-user {name} {email} {password}
