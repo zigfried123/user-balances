@@ -4,15 +4,14 @@ namespace App\Jobs;
 
 use App\Models\Balance;
 use App\Models\Operation;
-use App\Models\User;
-use App\Traits\ChangeBalance;
+use App\Services\OperationService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
 
 class OperationJob implements ShouldQueue
 {
-    use Queueable, ChangeBalance;
+    use Queueable;
 
     /**
      * Create a new job instance.
@@ -32,7 +31,7 @@ class OperationJob implements ShouldQueue
             DB::transaction(function () use ($data) {
                 $balance = Balance::find($this->data['balance_id']);
 
-                $this->changeBalanceByType($balance, $data);
+                (new OperationService)->changeBalanceByType($balance, $data);
 
                 $data['user_id'] = $balance->user->id;
 

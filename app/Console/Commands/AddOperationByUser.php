@@ -4,13 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\Balance;
 use App\Models\Operation;
-use App\Traits\ChangeBalance;
+use App\Services\OperationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class AddOperationByUser extends Command
 {
-    use ChangeBalance;
 
     /**
      * The name and signature of the console command.
@@ -39,7 +38,7 @@ class AddOperationByUser extends Command
 
                 $data['balance_id'] = $balance->id;
 
-                $this->changeBalanceByType($balance, $data);
+                (new OperationService)->changeBalanceByType($balance, $data);
 
                 $operation->create($data);
 

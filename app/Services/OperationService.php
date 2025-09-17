@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Traits;
+namespace App\Services;
 
 use Exception;
 
-Trait ChangeBalance{
+class OperationService
+{
     public function changeBalanceByType($balance, $data) {
         if($data['type'] === 'credit') {
             $balance->total += $data['sum'];
